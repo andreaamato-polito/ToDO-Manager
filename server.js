@@ -7,6 +7,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
 const userDao = require('./user-dao');
+const path = require('path');
 
 passport.use(new LocalStrategy(
    function(username, password, done){
@@ -32,8 +33,9 @@ passport.deserializeUser((id, done) => {
 });
 
 let app = new express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
+app.use(express.static("./client/build"));
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -51,6 +53,10 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('*', (req, res) => {
+    res.redirect('index.html');
+});
 
 /*** Tasks API ***/
 app.get('/api/tasks', isLoggedIn, (req, res) => {
