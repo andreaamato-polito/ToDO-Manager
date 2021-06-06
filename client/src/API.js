@@ -1,6 +1,3 @@
-const url = 'http://localhost:3000';
-
-
 function Task(id, description, important, priv, deadline, completed, user) {
         this.id = id,
         this.description = description,
@@ -12,7 +9,7 @@ function Task(id, description, important, priv, deadline, completed, user) {
 }
 
 async function loadAllTasks() {
-    const response = await fetch(url+'/api/tasks');
+    const response = await fetch('/api/tasks');
     const loadedTasks = await response.json();
     const tasksArray = await loadedTasks.map(lt => {
         const t = JSON.parse(JSON.stringify(lt));
@@ -23,7 +20,7 @@ async function loadAllTasks() {
 }
 
 async function addNewTask(task){
-        const response = await fetch(url+'/api/tasks', {
+        const response = await fetch('/api/tasks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +33,7 @@ async function addNewTask(task){
 }
 
 async function deleteTask(id){
-    const response = await fetch(url+'/api/tasks/'+id, {
+    const response = await fetch('/api/tasks/'+id, {
         method: 'DELETE',
     }).catch(function (error){
         console.log('Falied to delete data on server: ', error);
@@ -46,7 +43,7 @@ async function deleteTask(id){
 }
 
 async function applyFilter(filter) {
-    const response = await fetch(url+'/api/tasks/'+filter);
+    const response = await fetch('/api/tasks/'+filter);
     const loadedTasks = await response.json();
     const tasksArray = await loadedTasks.map(lt => {
         const t = JSON.parse(JSON.stringify(lt));
@@ -58,7 +55,7 @@ async function applyFilter(filter) {
 
 
 async function updateTask(id, task){
-    const response = await fetch(url+'/api/tasks/'+id, {
+    const response = await fetch('/api/tasks/'+id, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -72,7 +69,7 @@ async function updateTask(id, task){
 }
 
 async function markTask(id){
-    const response = await fetch(url+'/api/tasks/completed/'+id, {
+    const response = await fetch('/api/tasks/completed/'+id, {
         method: 'PUT',
     }).catch(function (error) {
         console.log('Failed to update data on server: ', error);
@@ -83,7 +80,7 @@ async function markTask(id){
 
 async function logIn(credentials){
     //da qui in poi
-    let response = await fetch(url+'/api/sessions', {
+    let response = await fetch('/api/sessions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -107,11 +104,11 @@ async function logIn(credentials){
 }
 
 async function logOut(){
-    await fetch(url+'/api/sessions/current', {method: 'DELETE' });
+    await fetch('/api/sessions/current', {method: 'DELETE' });
 }
 
 async function getUserInfo(){
-    const response = await fetch(url + '/api/sessions/current');
+    const response = await fetch('/api/sessions/current');
     const userInfo = await response.json();
     if(response.ok){
         return userInfo;
