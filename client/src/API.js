@@ -41,9 +41,10 @@ async function deleteTask(id){
 
     return response;
 }
+//const url = 'http://localhost:3000';
 
 async function applyFilter(filter) {
-    const response = await fetch('/api/tasks/'+filter);
+    const response = await fetch('http://localhost:3000/api/tasks/'+filter);
     const loadedTasks = await response.json();
     const tasksArray = await loadedTasks.map(lt => {
         const t = JSON.parse(JSON.stringify(lt));
