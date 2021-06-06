@@ -44,7 +44,7 @@ async function deleteTask(id){
 //const url = 'http://localhost:3000';
 
 async function applyFilter(filter) {
-    const response = await fetch('http://localhost:3000/api/tasks/'+filter);
+    const response = await fetch('https://radiant-thicket-45818.herokuapp.com/api/tasks/'+filter);
     const loadedTasks = await response.json();
     const tasksArray = await loadedTasks.map(lt => {
         const t = JSON.parse(JSON.stringify(lt));
