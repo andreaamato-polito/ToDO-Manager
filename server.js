@@ -208,9 +208,6 @@ app.get('/api/sessions/current', isLoggedIn, (req, res) => {
         res.status(401).json({ error: 'Unauthenticated user!' });
 });
 
-app.get('*', (req, res) => {
-    res.redirect('index.html');
-});
 
 // Activate the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
