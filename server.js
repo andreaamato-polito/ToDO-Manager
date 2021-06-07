@@ -209,5 +209,10 @@ app.get('/api/sessions/current', isLoggedIn, (req, res) => {
 });
 
 
+
 // Activate the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
+
+app.get('*', (req, res) => {
+    res.redirect('index.html');
+});
