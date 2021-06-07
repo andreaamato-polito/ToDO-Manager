@@ -10,13 +10,13 @@ const userDao = require('./user-dao');
 const path = require('path');
 
 passport.use(new LocalStrategy(
-   function(username, password, done){
-        userDao.getUser(username, password).then((user) =>{  
-        if(!user)
-            return done(null, false, { message: 'Incorrect username and/or password.' });
-        return done(null, user);
-       });
-   }
+    function (username, password, done) {
+        userDao.getUser(username, password).then((user) => {
+            if (!user)
+                return done(null, false, { message: 'Incorrect username and/or password.' });
+            return done(null, user);
+        });
+    }
 ));
 
 passport.serializeUser((user, done) => {
@@ -40,7 +40,7 @@ app.use(express.json());
 app.use(express.static("./client/build"));
 
 const isLoggedIn = (req, res, next) => {
-    if(req.isAuthenticated())
+    if (req.isAuthenticated())
         return next();
     return res.status(401).json({ error: 'not authenticated' });
 }
@@ -107,7 +107,7 @@ app.post('/api/tasks', isLoggedIn, async (req, res) => {
     let completed = req.body.completed;
     let user = req.user.id;
     //let user = req.body.user;
-    
+
 
     try {
         let id = await dao.getLastId();
@@ -162,11 +162,11 @@ app.put('/api/tasks/:id', async (req, res) => {
 
 app.put('/api/tasks/completed/:id', async (req, res) => {
     const id = req.params.id;
-    try { 
+    try {
         let task = await dao.getTask(id, req.user.id);
         await dao.markTask(task, req.user.id);
         res.end();
-    }catch (error){
+    } catch (error) {
         res.status(500).json(error);
     }
 });
@@ -175,15 +175,15 @@ app.put('/api/tasks/completed/:id', async (req, res) => {
 
 // POST /sessions
 //login
-app.post('/api/sessions', function(req, res, next){
+app.post('/api/sessions', function (req, res, next) {
     passport.authenticate('local', (err, user, info) => {
-        if(err)
+        if (err)
             return next(err);
-        if(!user){
+        if (!user) {
             return res.status(401).json(info);
         }
         req.login(user, (err) => {
-            if(err)
+            if (err)
                 return next(err);
             return res.json(req.user);
         });
@@ -201,16 +201,17 @@ app.delete('/api/sessions/current', (req, res) => {
 // check wheter the user is logged in or not
 app.get('/api/sessions/current', isLoggedIn, (req, res) => {
     console.log("here");
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         res.status(200).json(req.user);
     }
     else
         res.status(401).json({ error: 'Unauthenticated user!' });
 });
 
-app.get('*', (req, res) => {
-    res.redirect('index.html');
+app.get('*', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
+
 
 // Activate the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
