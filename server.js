@@ -54,9 +54,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('*', (req, res) => {
-    res.redirect('index.html');
-});
 
 /*** Tasks API ***/
 app.get('/api/tasks', isLoggedIn, (req, res) => {
@@ -209,6 +206,10 @@ app.get('/api/sessions/current', isLoggedIn, (req, res) => {
     }
     else
         res.status(401).json({ error: 'Unauthenticated user!' });
+});
+
+app.get('*', (req, res) => {
+    res.redirect('index.html');
 });
 
 // Activate the server
