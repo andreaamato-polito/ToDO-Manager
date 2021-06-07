@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 
 function TaskList(props) {
+    console.log("filter use effect");
     useEffect(() => {
         async function filterTasks() {
             const filteredTasks = await applyFilter(props.filter.replace(/\s+/g, ''));

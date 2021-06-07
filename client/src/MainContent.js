@@ -42,14 +42,18 @@ function MainContent(props) {
 
 
     useEffect(() => {
+        console.log("use effect");
         if (loggedIn) {
+        
             async function loadTasks() {
                 const loadedTasks = await loadAllTasks();
                 setTasks(loadedTasks); //this 'worked'
+
             };
             loadTasks().catch(err => {
                 setMessage({ msg: "Impossible to load your tasks! Please, try again later...", type: 'danger' });
                 console.error(err);
+
             });
         }
 
