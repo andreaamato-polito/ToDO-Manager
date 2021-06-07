@@ -35,9 +35,9 @@ passport.deserializeUser((id, done) => {
 let app = new express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.static("./client/build"));
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.static("./client/build"));
 
 const isLoggedIn = (req, res, next) => {
     if(req.isAuthenticated())
@@ -208,11 +208,11 @@ app.get('/api/sessions/current', isLoggedIn, (req, res) => {
         res.status(401).json({ error: 'Unauthenticated user!' });
 });
 
+app.get('*', (req, res) => {
+    res.redirect('index.html');
+});
 
 
 // Activate the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
 
-app.get('*', (req, res) => {
-    res.redirect('index.html');
-});
